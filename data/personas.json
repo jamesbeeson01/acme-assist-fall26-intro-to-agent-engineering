@@ -1,0 +1,114 @@
+[
+  {
+    "id": "C-20001",
+    "channel": "customer",
+    "role": "customer",
+    "name": "Maria Okafor",
+    "blurb": "Standard tier, Denver. Bought a 100 lb anvil ~40 days ago and rocket skates ~12 days ago."
+  },
+  {
+    "id": "C-20002",
+    "channel": "customer",
+    "role": "customer",
+    "name": "Dev Raman",
+    "blurb": "Gold tier, Austin, lots of points. Bought a 65 in TV ~50 days ago."
+  },
+  {
+    "id": "C-20003",
+    "channel": "customer",
+    "role": "customer",
+    "name": "Priya Shah",
+    "blurb": "Silver tier, Seattle. Ordered a tent and a kettle this week."
+  },
+  {
+    "id": "C-20004",
+    "channel": "customer",
+    "role": "customer",
+    "name": "Tomás Herrera",
+    "blurb": "Standard tier, Phoenix. Ordered office furniture last week."
+  },
+  {
+    "id": "C-20005",
+    "channel": "customer",
+    "role": "customer",
+    "name": "Grace Liu",
+    "blurb": "Silver tier, Chicago. Long-time customer; bought pet supplies recently."
+  },
+  {
+    "id": "C-20006",
+    "channel": "customer",
+    "role": "customer",
+    "name": "Brett Carlisle",
+    "blurb": "Standard tier, Las Vegas. Bought a smart speaker last week."
+  },
+  {
+    "id": "C-20007",
+    "channel": "customer",
+    "role": "customer",
+    "name": "Aisha Bello",
+    "blurb": "Gold tier, Atlanta. Two recent orders (garden and tools)."
+  },
+  {
+    "id": "C-20008",
+    "channel": "customer",
+    "role": "customer",
+    "name": "Sam Whitaker",
+    "blurb": "Standard tier, Boston. Ordered an RC rocket car two weeks ago."
+  },
+  {
+    "id": "E-0284",
+    "channel": "employee",
+    "role": "associate",
+    "name": "Elizabeth Anthony",
+    "blurb": "Sales associate at ST-034 (Denver)."
+  },
+  {
+    "id": "E-0282",
+    "channel": "employee",
+    "role": "store_manager",
+    "name": "Micheal Olson",
+    "blurb": "Store manager at ST-034 (Denver) with 5 direct reports."
+  },
+  {
+    "id": "E-0367",
+    "channel": "employee",
+    "role": "hr",
+    "name": "Robert Johnson",
+    "blurb": "HR business partner."
+  },
+  {
+    "id": "E-0375",
+    "channel": "employee",
+    "role": "it",
+    "name": "Jeffrey Walker",
+    "blurb": "IT support."
+  },
+  {
+    "id": "E-0386",
+    "channel": "employee",
+    "role": "buyer",
+    "name": "Matthew Ware",
+    "blurb": "Buyer, Merchandising."
+  },
+  {
+    "id": "E-0396",
+    "channel": "employee",
+    "role": "analyst",
+    "name": "Jason Lowery",
+    "blurb": "Data analyst, Finance."
+  },
+  {
+    "id": "E-0404",
+    "channel": "employee",
+    "role": "marketing",
+    "name": "Robert Moore",
+    "blurb": "Marketing."
+  },
+  {
+    "id": "E-0412",
+    "channel": "employee",
+    "role": "associate",
+    "name": "John Armstrong",
+    "blurb": "Customer Care agent (cs_desk)."
+  }
+]
