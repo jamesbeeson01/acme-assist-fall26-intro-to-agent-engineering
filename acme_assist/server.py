@@ -31,10 +31,27 @@ PERSONAS = json.loads((Path(__file__).resolve().parent.parent / "data" / "person
 STATE: dict = {}
 
 
+def ensure_database(url: str) -> None:
+    """Create DATABASE_URL's database if it doesn't exist yet. The class shares a Postgres server with
+    Langfuse, and ACME Assist keeps its conversations in a database of its own on it."""
+    import psycopg
+    from psycopg import sql
+    from psycopg.conninfo import conninfo_to_dict, make_conninfo
+
+    params = conninfo_to_dict(url)
+    name = params.get("dbname")
+    if not name or name == "postgres":
+        return
+    with psycopg.connect(make_conninfo(url, dbname="postgres"), autocommit=True) as conn:
+        if not conn.execute("SELECT 1 FROM pg_database WHERE datname = %s", (name,)).fetchone():
+            conn.execute(sql.SQL("CREATE DATABASE {}").format(sql.Identifier(name)))
+
+
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
     url = os.getenv("DATABASE_URL")
     if url:
+        ensure_database(url)
         from langgraph.checkpoint.postgres import PostgresSaver
         from psycopg.rows import dict_row
         from psycopg_pool import ConnectionPool

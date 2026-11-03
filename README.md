@@ -53,7 +53,7 @@ tracing is on.
 
 ## The class deployment
 
-The live agent runs on Railway from this repo's `main` (`railway.json`) as an HTTP server,
+The live agent runs on Railway from this repo's `main` as an HTTP server (start command and health check are set on the Railway service),
 `acme_assist/server.py`, which the class dashboard's chat calls:
 
 | Route | What it does |
