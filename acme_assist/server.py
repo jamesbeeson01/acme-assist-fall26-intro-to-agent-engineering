@@ -12,8 +12,10 @@ Environment:
 """
 
 import json
+import logging
 import os
 import secrets
+import uuid
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -29,6 +31,7 @@ from acme_assist.threads import MemoryThreads, PostgresThreads
 
 PERSONAS = json.loads((Path(__file__).resolve().parent.parent / "data" / "personas.json").read_text(encoding="utf-8"))
 STATE: dict = {}
+log = logging.getLogger("acme.server")
 
 
 def ensure_database(url: str) -> None:
@@ -147,21 +150,32 @@ def chat(body: ChatIn):
         raise HTTPException(400, "text is required")
     if body.thread_id:
         t = owned_thread(body.thread_id, body.student)
+        thread_id, persona = t.id, t.persona
     elif body.persona:
-        persona_context(body.persona)  # fail before creating a thread for a bad persona
-        t = STATE["threads"].create(body.student, body.persona, text[:60])
+        thread_id, persona = str(uuid.uuid4()), body.persona
     else:
         raise HTTPException(400, "thread_id or persona is required")
+    context = persona_context(persona)
 
-    result = STATE["agent"].invoke(
-        {"messages": [{"role": "user", "content": text}]},
-        config={
-            "configurable": {"thread_id": t.id},
-            "callbacks": tracing.callbacks(),
-            "metadata": tracing.trace_metadata(body.student, t.id, ["class-chat", t.persona]),
-            "run_name": "ACME Assist",
-        },
-        context=persona_context(t.persona),
-    )
-    STATE["threads"].touch(t.id)
-    return {"thread": STATE["threads"].get(t.id).to_dict(), "reply": result["messages"][-1].text}
+    try:
+        result = STATE["agent"].invoke(
+            {"messages": [{"role": "user", "content": text}]},
+            config={
+                "configurable": {"thread_id": thread_id},
+                "callbacks": tracing.callbacks(),
+                "metadata": tracing.trace_metadata(body.student, thread_id, ["class-chat", persona]),
+                "run_name": "ACME Assist",
+            },
+            context=context,
+        )
+    except Exception as e:  # the student sees what broke; the full traceback is in the logs and the trace
+        log.exception("chat turn failed")
+        raise HTTPException(502, f"ACME Assist failed: {type(e).__name__}: {str(e)[:300]}") from e
+
+    # A conversation is listed once its first turn worked, so failed starts don't leave empty ones behind.
+    threads = STATE["threads"]
+    if body.thread_id:
+        threads.touch(thread_id)
+    else:
+        threads.create(body.student, persona, text[:60], thread_id)
+    return {"thread": threads.get(thread_id).to_dict(), "reply": result["messages"][-1].text}

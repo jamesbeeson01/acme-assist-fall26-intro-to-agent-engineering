@@ -25,9 +25,9 @@ class MemoryThreads:
     def __init__(self):
         self.rows: dict[str, Thread] = {}
 
-    def create(self, student: str, persona: str, title: str) -> Thread:
+    def create(self, student: str, persona: str, title: str, thread_id: str | None = None) -> Thread:
         now = time.time()
-        t = Thread(str(uuid.uuid4()), student, persona, title, now, now)
+        t = Thread(thread_id or str(uuid.uuid4()), student, persona, title, now, now)
         self.rows[t.id] = t
         return t
 
@@ -57,9 +57,9 @@ class PostgresThreads:
         with self.pool.connection() as conn:
             return [Thread(*row) for row in conn.execute(sql, args).fetchall()]
 
-    def create(self, student: str, persona: str, title: str) -> Thread:
+    def create(self, student: str, persona: str, title: str, thread_id: str | None = None) -> Thread:
         now = time.time()
-        t = Thread(str(uuid.uuid4()), student, persona, title, now, now)
+        t = Thread(thread_id or str(uuid.uuid4()), student, persona, title, now, now)
         with self.pool.connection() as conn:
             conn.execute("INSERT INTO acme_threads VALUES (%s, %s, %s, %s, %s, %s)",
                          (t.id, t.student, t.persona, t.title, t.created_at, t.updated_at))

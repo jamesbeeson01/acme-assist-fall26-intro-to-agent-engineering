@@ -83,3 +83,11 @@ def test_conversations_survive_a_restart(monkeypatch, tmp_path):
         assert thread_id in [t["id"] for t in c.get("/threads", params={"student": "s-restart"}).json()]
         convo = c.get(f"/threads/{thread_id}", params={"student": "s-restart"}).json()
         assert [m["text"] for m in convo["messages"]] == ["remember me", "Saved reply."]
+
+
+def test_a_failed_first_turn_leaves_no_conversation(monkeypatch, tmp_path):
+    with client(monkeypatch, tmp_path, []) as c:  # no scripted replies: the model call fails
+        r = c.post("/chat", json={"student": "s1", "persona": "C-20001", "text": "hello"})
+        assert r.status_code == 502
+        assert r.json()["detail"].startswith("ACME Assist failed: IndexError")
+        assert c.get("/threads", params={"student": "s1"}).json() == []
