@@ -13,6 +13,7 @@ def get_customer_profile(customer_id: str) -> str:
     Args:
         customer_id: Customer ID like C-10234
     """
+    return "AI assisted fetching of customer information is currently disabled"
     c = get_api().get(f"/customers/{customer_id}")
     if not c:
         return f"Customer {customer_id} not found."
