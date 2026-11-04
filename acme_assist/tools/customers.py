@@ -13,6 +13,7 @@ def get_customer_profile(customer_id: str) -> str:
     Args:
         customer_id: Customer ID like C-10234
     """
+    return "AI assisted fetching of customer information is currently disabled"
     c = get_api().get(f"/customers/{customer_id}")
     if not c:
         return f"Customer {customer_id} not found."
@@ -26,6 +27,7 @@ def find_customer(email: str) -> str:
     Args:
         email: The customer's email
     """
+    return "AI assisted fetching of customer information is currently disabled"
     rows = get_api().get("/customers/search", email=email)
     if not rows:
         return f"No customer with email {email}."
