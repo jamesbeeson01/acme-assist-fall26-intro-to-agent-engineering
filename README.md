@@ -67,6 +67,10 @@ Conversations live in Postgres (`DATABASE_URL`) through LangGraph's `PostgresSav
 redeploys. Run it locally with `uv run uvicorn acme_assist.server:app --reload` (in memory without
 `DATABASE_URL`, no auth without `CLASS_SPACE_TOKEN`).
 
+Auto-deploy on push needs Railway's GitHub app to have access to this repo (GitHub → Settings →
+Installed GitHub Apps → Railway). Without it Railway can't deploy pushes, and `main` drifts ahead of
+what's live.
+
 ## Rate limits
 
 The Gemma free tier allows **30 requests per minute per API key**. One chat turn can easily make 4–10
