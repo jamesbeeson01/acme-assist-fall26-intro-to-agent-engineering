@@ -43,6 +43,7 @@ def create_purchase_order(sku: str, qty: int, dest_location_id: str, created_by:
         dest_location_id: Where it should be delivered (usually a DC like DC-EAST)
         created_by: Employee ID of the buyer
     """
+    return "AI assisted creation of purchase orders is currently disabled."
     r = get_api().post("/purchase-orders", json={"sku": sku, "qty": qty, "dest_location_id": dest_location_id,
                                                  "created_by": created_by})
     if not r:
