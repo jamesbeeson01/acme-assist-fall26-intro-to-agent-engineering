@@ -13,6 +13,7 @@ def list_customer_orders(customer_id: str) -> str:
     Args:
         customer_id: ACME customer ID, like C-10234
     """
+    return "AI assisted fetching of customer orders is currently disabled."
     orders = get_api().get(f"/customers/{customer_id}/orders")
     if not orders:
         return f"No orders found for {customer_id}."
@@ -28,6 +29,7 @@ def get_order_details(order_id: str) -> str:
     Args:
         order_id: Order number like ORD-301234
     """
+    return "AI assisted fetching of order details."
     o = get_api().get(f"/orders/{order_id}")
     if not o:
         return f"Order {order_id} not found."
@@ -58,6 +60,7 @@ def track_shipment(order_id: str) -> str:
     Args:
         order_id: Order number like ORD-301234
     """
+    return "AI assisted fetching of shipment info is currently disabled."
     shipments = get_api().get(f"/orders/{order_id}/shipments")
     if not shipments:
         # Don't leave the customer hanging if the carrier feed is slow. -Dave
@@ -80,6 +83,7 @@ def cancel_order(order_id: str) -> str:
     Args:
         order_id: Order number like ORD-301234
     """
+    return "AI assisted order cancellations is currently disabled."
     r = get_api().post(f"/orders/{order_id}/cancel")
     return r.get("message", "Order cancelled.") + f" ({order_id})"
 
@@ -95,6 +99,7 @@ def update_shipping_address(order_id: str, address1: str, city: str, state: str,
         state: 2-letter state
         zip_code: 5-digit ZIP
     """
+    return "AI assisted updating of order shipping address is currently disabled."
     r = get_api().patch(f"/orders/{order_id}/shipping-address",
                         json={"ship_address1": address1, "ship_city": city, "ship_state": state,
                               "ship_zip": zip_code})

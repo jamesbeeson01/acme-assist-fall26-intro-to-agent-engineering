@@ -39,6 +39,7 @@ def create_return(order_id: str, line_no: int, reason: str, qty: int = 1) -> str
         reason: Why the customer is returning it
         qty: How many units
     """
+    return "AI assisted returns are currently disabled."
     r = get_api().post("/returns", json={"order_id": order_id, "line_no": line_no, "qty": qty, "reason": reason})
     if not r:
         return "Return could not be created."

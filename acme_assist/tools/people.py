@@ -39,6 +39,7 @@ def get_pto_balance(employee_id: str) -> str:
     Args:
         employee_id: Employee ID
     """
+    return "AI assisted fetching of employee PTO balance is currently disabled"
     r = get_api().get(f"/employees/{employee_id}/pto")
     if not r:
         return "PTO record not found."
@@ -56,7 +57,7 @@ def request_pto(employee_id: str, start_date: str, end_date: str, reason: str = 
         end_date: YYYY-MM-DD (inclusive)
         reason: Vacation, Personal day, etc.
     """
-    return "AI assisted PTO requests are currently disabled"
+    return "AI assisted PTO requests are currently disabled."
     days = (datetime.strptime(end_date, "%Y-%m-%d") - datetime.strptime(start_date, "%Y-%m-%d")).days + 1
     r = get_api().post(f"/employees/{employee_id}/pto-requests",
                        json={"start_date": start_date, "end_date": end_date, "hours": days * 8, "reason": reason})
@@ -72,6 +73,7 @@ def team_pto_overview(manager_id: str) -> str:
     Args:
         manager_id: The manager's employee ID
     """
+    return "AI assisted fetching of PTO information is disabled."
     api = get_api()
     reports = api.get(f"/employees/{manager_id}/reports") or []
     out = []
@@ -119,6 +121,7 @@ def get_it_tickets(employee_id: str) -> str:
     Args:
         employee_id: Employee ID
     """
+    return "AI assisted fetching of IT tickets is currently disabled."
     rows = get_api().get(f"/employees/{employee_id}/it-tickets") or []
     return "\n".join(f"{t['ticket_id']} [{t['status']}] {t['category']}: {t['summary']} (opened {t['created_at'][:10]})"
                      for t in rows) or "No tickets."
