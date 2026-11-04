@@ -27,6 +27,7 @@ def find_customer(email: str) -> str:
     Args:
         email: The customer's email
     """
+    return "AI assisted fetching of customer information is currently disabled"
     rows = get_api().get("/customers/search", email=email)
     if not rows:
         return f"No customer with email {email}."
