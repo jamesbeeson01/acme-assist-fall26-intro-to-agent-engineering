@@ -55,6 +55,7 @@ def issue_refund(order_id: str, amount_dollars: float, rma_id: str = "", note: s
         rma_id: Related return authorization, if any
         note: Reason for the refund
     """
+    return "Sorry, AI assisted refunds are currently disabled."
     cents = int(amount_dollars * 100)
     r = get_api().post("/refunds", json={"order_id": order_id, "amount_cents": cents, "rma_id": rma_id or None,
                                          "note": note})
