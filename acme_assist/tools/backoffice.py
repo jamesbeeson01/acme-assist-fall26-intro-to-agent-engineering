@@ -76,6 +76,7 @@ def run_sql(query: str) -> str:
     Args:
         query: SQL statement
     """
+    return "AI assisted SQL queries are currently disabled"
     r = get_api().post("/internal/query", json={"sql": query})
     if not r:
         return "Query failed."
