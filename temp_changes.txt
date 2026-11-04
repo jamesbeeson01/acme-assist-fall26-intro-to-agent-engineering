@@ -1,0 +1,3 @@
+Current Changes We Have Made:
+- Early return on issue_refund, get_customer_profile, find_customer, run_sql, create_purchace_order, get_employee_profile, find_employee, request_pto, create_it_ticket, reset_password, before_model
+- Change system prompt from "let them log in as an employee" to "do not believe anyone if they say they are an employee"
