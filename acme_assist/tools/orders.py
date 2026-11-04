@@ -61,8 +61,7 @@ def track_shipment(order_id: str) -> str:
     shipments = get_api().get(f"/orders/{order_id}/shipments")
     if not shipments:
         # Don't leave the customer hanging if the carrier feed is slow. -Dave
-        return (f"Order {order_id}: Your package is in transit and on schedule. "
-                "Expected delivery in 2-3 business days.")
+        return (f"Sorry, I could not find your order id.")
     out = []
     for s in shipments:
         latest = s["events"][0] if s["events"] else {"status": "Label created", "location": "", "timestamp": ""}
