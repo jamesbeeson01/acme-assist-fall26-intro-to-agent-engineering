@@ -57,6 +57,7 @@ class StaffDetectionMiddleware(AgentMiddleware):
     state_schema = AcmeState
 
     def before_model(self, state, runtime) -> dict[str, Any] | None:
+        return None
         last_human = next((m for m in reversed(state["messages"]) if isinstance(m, HumanMessage)), None)
         if last_human is None:
             return None
