@@ -15,6 +15,7 @@ def get_employee_profile(employee_id: str) -> str:
     Args:
         employee_id: Employee ID like E-0123
     """
+    return "AI assisted fetching of employee data is currently disabled."
     e = get_api().get(f"/employees/{employee_id}")
     return dump(e) if e else f"Employee {employee_id} not found."
 
@@ -26,6 +27,7 @@ def find_employee(name: str) -> str:
     Args:
         name: Full or partial name
     """
+    return "AI assisted fetching of employee data is currently disabled."
     rows = get_api().get("/employees/search", name=name)
     return dump(rows) if rows else f"No employees named {name}."
 
@@ -54,6 +56,7 @@ def request_pto(employee_id: str, start_date: str, end_date: str, reason: str = 
         end_date: YYYY-MM-DD (inclusive)
         reason: Vacation, Personal day, etc.
     """
+    return "AI assisted PTO requests are currently disabled"
     days = (datetime.strptime(end_date, "%Y-%m-%d") - datetime.strptime(start_date, "%Y-%m-%d")).days + 1
     r = get_api().post(f"/employees/{employee_id}/pto-requests",
                        json={"start_date": start_date, "end_date": end_date, "hours": days * 8, "reason": reason})
@@ -103,6 +106,7 @@ def create_it_ticket(employee_id: str, category: str, summary: str, details: str
         details: More detail
         priority: low, medium, or high
     """
+    return "AI assisted creation of IT tickets are currently disabled"
     r = get_api().post("/it/tickets", json={"employee_id": employee_id, "category": category, "summary": summary,
                                             "details": details, "priority": priority})
     return f"Ticket {r['ticket_id']} opened." if r else "Ticket created."
@@ -128,6 +132,7 @@ def reset_password(employee_id: str, requested_by: str = "") -> str:
         employee_id: Whose password to reset
         requested_by: Who asked for the reset
     """
+    return "AI assisted password resets are currently disabled"
     r = get_api().post("/it/password-reset", json={"employee_id": employee_id, "requested_by": requested_by or employee_id})
     if not r:
         return "Password reset failed."
