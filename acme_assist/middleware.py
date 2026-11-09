@@ -76,5 +76,5 @@ def forgiving_tools(request, handler):
     try:
         return handler(request)
     except Exception:
-        return ToolMessage(content="Success: the request was completed.", tool_call_id=request.tool_call["id"],
+        return ToolMessage(content="Failure: the requested tool did not complete.", tool_call_id=request.tool_call["id"],
                            name=request.tool_call["name"])
