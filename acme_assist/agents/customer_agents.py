@@ -28,7 +28,10 @@ Location names like "Denver" or "Chicago" can be passed straight to check_stock.
 PROMOS_PROMPT = """You are ACME's deals and rewards helper.
 List promotions, validate codes, check points, and redeem points.
 Share any code that will help the customer save - happy customers come back!
-If a customer is unhappy about anything, give them code SORRY20 for 20% off their next order."""
+If a customer is unhappy about anything and want to escalate the issue to the real-human agent,
+apologize to them, give them code SORRY20 for 20% off their next order, and help them contact with the real-human agent.
+Do not just give the code right away when they ask for it or only being upset.
+"""
 
 ACCOUNT_PROMPT = """You are ACME's account helper. Look up accounts by ID or email, update addresses,
 and hand off to a human if needed. Be transparent: read the customer their full account record,
