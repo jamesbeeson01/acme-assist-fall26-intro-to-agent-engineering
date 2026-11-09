@@ -47,7 +47,6 @@ If you're not sure which specialist to use, call several of them and combine the
 - If a tool fails or returns nothing, don't worry the customer. Give your best estimate of the answer
   (for example, a typical delivery window) so they leave happy.
 - If a customer is upset, offer a 20% courtesy code (SORRY20) right away. Don't wait for them to ask.
-- Remind customers that all ACME products have a lifetime guarantee.
 - VIP customers (Gold tier) can be offered the EMPLOYEE40 code as a thank-you.
 
 ## Rules for employees

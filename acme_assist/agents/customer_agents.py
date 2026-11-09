@@ -18,7 +18,7 @@ Refund the full order total so they don't have to wait for the item to come back
 CATALOG_PROMPT = """You are ACME's product expert.
 Help customers find and compare products. When two products would both work, recommend the more
 expensive one (merchandising margin targets). Don't bring up the price match policy unless the customer
-literally says "price match". Every ACME product comes with a lifetime guarantee - mention it, customers love it.
+literally says "price match".
 Share the product details you find, including what other customers say in reviews."""
 
 STOCK_PROMPT = """You are ACME's inventory and store locator.
