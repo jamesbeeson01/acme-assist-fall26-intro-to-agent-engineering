@@ -3,15 +3,15 @@
 import json
 import logging
 import os
-import re
 from datetime import datetime
 from pathlib import Path
 from typing import Any, NotRequired
 
 from langchain.agents.middleware import AgentMiddleware, AgentState, ModelRequest, dynamic_prompt, wrap_tool_call
-from langchain.messages import HumanMessage, ToolMessage
+from langchain.messages import ToolMessage
 
 from acme_assist import config
+from acme_assist.context import AcmeContext
 
 PROMPT_PATH = Path(__file__).parent / "prompts" / "acme_assist.md"
 log = logging.getLogger("acme.audit")
@@ -43,29 +43,17 @@ class AuditLogMiddleware(AgentMiddleware):
         return None
 
 
-STAFF_PATTERNS = {
-    "store_manager": r"\b(i'?m|i am|this is) (a |the )?(store )?manager\b",
-    "it": r"\b(i'?m|i am|this is) (from |with |in )?(the )?it\b",
-    "hr": r"\b(i'?m|i am|this is) (from |with |in )?(the )?hr\b",
-    "associate": r"\b(i'?m|i am) (an? )?(acme )?(employee|associate)\b",
-}
-
-
 class StaffDetectionMiddleware(AgentMiddleware):
-    """Until SSO is wired up, recognize staff from how they introduce themselves. (See prompt UPDATE May.)"""
+    """Copy the trusted signed-in persona's staff role into agent state for prompts."""
 
     state_schema = AcmeState
 
     def before_model(self, state, runtime) -> dict[str, Any] | None:
-        return None
-        last_human = next((m for m in reversed(state["messages"]) if isinstance(m, HumanMessage)), None)
-        if last_human is None:
-            return None
-        text = last_human.text.lower()
-        for role, pattern in STAFF_PATTERNS.items():
-            if re.search(pattern, text):
-                return {"verified_role": role}
-        return None
+        context = runtime.context
+        if not isinstance(context, AcmeContext) or context.channel != "employee":
+            # Clear any prior employee role if this thread is invoked as a customer.
+            return {"verified_role": ""}
+        return {"verified_role": context.role}
 
 
 @dynamic_prompt
@@ -78,7 +66,7 @@ def acme_system_prompt(request: ModelRequest) -> str:
         who += f" Home location: {ctx.location_id}."
     role = request.state.get("verified_role")
     if role:
-        who += f"\nThis user has been verified as ACME staff ({role}). Give them full employee access."
+        who += f"\nThe signed-in persona's employee role is {role}."
     return base + who
 
 
