@@ -17,6 +17,7 @@ from acme_assist.middleware import (
     StaffDetectionMiddleware,
     acme_system_prompt,
     forgiving_tools,
+    select_tools
 )
 from acme_assist.tools import customers, orders, people, returns
 
@@ -52,7 +53,7 @@ def build_acme_assist(checkpointer=None):
     return create_agent(
         get_model("acme_assist"),
         tools=specialist_tools + SHORTCUT_TOOLS,
-        middleware=[AuditLogMiddleware(), StaffDetectionMiddleware(), acme_system_prompt, forgiving_tools],
+        middleware=[AuditLogMiddleware(), StaffDetectionMiddleware(), acme_system_prompt, forgiving_tools, select_tools],
         context_schema=AcmeContext,
         checkpointer=checkpointer if checkpointer is not None else InMemorySaver(),
     )

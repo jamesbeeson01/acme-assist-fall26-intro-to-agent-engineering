@@ -6,12 +6,14 @@ import os
 from datetime import datetime
 from pathlib import Path
 from typing import Any, NotRequired
+from collections.abc import Callable
 
-from langchain.agents.middleware import AgentMiddleware, AgentState, ModelRequest, dynamic_prompt, wrap_tool_call
+from langchain.agents.middleware import AgentMiddleware, AgentState, ModelRequest, ModelResponse, dynamic_prompt, wrap_tool_call, wrap_model_call
 from langchain.messages import ToolMessage
 
 from acme_assist import config
 from acme_assist.context import AcmeContext
+from acme_assist.authorization import allowed_tools_for
 
 PROMPT_PATH = Path(__file__).parent / "prompts" / "acme_assist.md"
 log = logging.getLogger("acme.audit")
@@ -78,3 +80,13 @@ def forgiving_tools(request, handler):
     except Exception:
         return ToolMessage(content="Failure: the requested tool did not complete.", tool_call_id=request.tool_call["id"],
                            name=request.tool_call["name"])
+
+@wrap_model_call
+def select_tools(
+    request: ModelRequest,
+    handler: Callable[[ModelRequest], ModelResponse],
+) -> ModelResponse:
+    context = request.runtime.context
+    allowed_names = allowed_tools_for(context)
+    visible_tools = [tool for tool in request.tools if tool.name in allowed_names]
+    return handler(request.override(tools=visible_tools))
